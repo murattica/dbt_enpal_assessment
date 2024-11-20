@@ -24,7 +24,7 @@ Below are the stages modeled in this project:
 
 ## Data Modeling Flow
 
-![image](https://github.com/user-attachments/assets/8abf235b-f2ca-4b8f-af93-7e53d0cd3f1a)
+![image](https://github.com/user-attachments/assets/268da5cb-b889-489e-9a41-b30613ba84ac)
 
 **Daily Aggregations:** Data is first aggregated at a daily level in daily_activity_stats and daily_deal_stats models. This daily data is further rolled up to provide monthly insights.
 
