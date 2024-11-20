@@ -2,7 +2,7 @@
 # Name your project! Project names should contain only lowercase characters
 # and underscores. A good package name should reflect your organization's
 # name or the intended use of these models
-name: 'enpal_assessment_project'
+name: 'dbt_enpal_assessment'
 version: '1.0.0'
 
 # This setting configures which "profile" dbt uses for this project.
@@ -22,6 +22,10 @@ clean-targets:         # directories to be removed by `dbt clean`
   - "target"
   - "dbt_packages"
 
+vars:
+  source_dt: '' #global var for reference date
+  months : 12 #global var for all models
+  backfill_period : 7 #default backfill period
 
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
@@ -30,7 +34,36 @@ clean-targets:         # directories to be removed by `dbt clean`
 # directory as views. These settings can be overridden in the individual model
 # files using the `{{ config(...) }}` macro.
 models:
-  enpal_assessment_project:
-    # Config indicated by + and applies to all files under models/example/
-    +schema: pipedrive_analytics
-    +materialized: table
+  +materialized: "{{ 'table' if target.name == 'production' else 'view' }}"
+  dbt_enpal_assessment:
+    pipedrive_analytics:
+      +schema: pipedrive_analytics
+      +tags: ["pipedrive"]
+
+      1_staging:
+        +schema: pipedrive_analytics_staging
+        +materialized: "view"
+        +tags: ["pipedrive_staging"]
+
+      2_analytics:
+        +schema: pipedrive_analytics
+        +materialized: "table"
+        +tags: ["pipedrive_analytics"]
+        +vars:
+          {
+            'source_dt': '',
+            'months': 12,
+            'backfill_period': 7,
+          }
+
+    reporting:
+      pipedrive_montly_reporting:
+        +schema: reports
+        +materialized: "table"
+        +tags: ["pipedrive","pipedrive_monthly_report"]
+        +vars: 
+          {
+            'months': 24,
+            'backfill_period': 7
+          }
+

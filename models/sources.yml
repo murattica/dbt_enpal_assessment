@@ -6,3 +6,29 @@ sources:
     schema: public
     tables:
       - name: activity
+        description: activity history
+        freshness: 
+          error_after: {count: 24, period: hour}
+          ## filter: source_loaded_at >= '{{ var('source_dt') }}'::date
+        loaded_at_field: source_loaded_at
+        columns: 
+          - name: deal_id
+            data_tests:
+              - not_null
+          - name: activity_id
+            data_tests:
+              - not_null
+      - name: activity_types
+        description: activity types
+      - name: deal_changes
+        description: deal history
+        columns: 
+          - name: deal_id
+            data_tests:
+              - not_null
+      - name: fields
+        description: funnel stage + lost reason ID's
+      - name: stages
+        description: funnel stage IDs
+      - name: users
+        description: user info

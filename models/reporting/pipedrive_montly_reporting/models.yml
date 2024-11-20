@@ -1,0 +1,23 @@
+version: 2
+
+models:
+ - name: monthly_stats
+   description: >     
+     {{ doc("monthly_stats") }}
+
+   columns: 
+    - name: month
+      type: date
+      description: month
+
+    - name: kpi_name
+      type: text
+      description: The name of the funnel step
+
+    - name: funnel_step
+      type: text
+      description: The funnel step
+
+    - name: deals_count
+      type: number
+      description: The total number of deals associated with a specific funnel step or activity within a given month
