@@ -61,7 +61,6 @@ from {{ ref('activity_staging') }}
 where 1=1
     {% if is_incremental() %}
     and due_date >= '{{ source }}'::date - {{ var('backfill_period') }}
-    and due_date <= '{{ source }}'::date
     {% else %}
     and due_date > date_trunc('month', current_date) - interval '{{ var('months') }} month'  
     {% endif %}
